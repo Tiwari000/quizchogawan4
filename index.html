@@ -1,0 +1,1029 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advanced AI MCQ Challenge</title>
+
+<style>
+:root {
+  --bg: #080b1b;
+  --panel: #121629;
+  --panel2: #1b1c35;
+  --border: #453064;
+  --purple: #b66aff;
+  --blue: #59baff;
+  --text: #f4f2ff;
+  --muted: #b5bdd2;
+  --green: #43d9a3;
+  --red: #ff6b81;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(ellipse at top, #211638 0%, var(--bg) 55%);
+  color: var(--text);
+  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+}
+
+header {
+  text-align: center;
+  padding: 32px 16px 22px;
+}
+
+.tag {
+  display: inline-block;
+  padding: 7px 14px;
+  border: 1px solid var(--border);
+  background: #201735;
+  color: #d8b3ff;
+  border-radius: 30px;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 1.5px;
+}
+
+h1 {
+  font-size: clamp(27px, 4vw, 42px);
+  margin: 17px 0 10px;
+}
+
+h1 span { color: var(--purple); }
+
+header p {
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 950px;
+  margin: auto;
+  padding: 0 16px 45px;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.stat {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 15px;
+  text-align: center;
+}
+
+.stat small {
+  display: block;
+  color: var(--muted);
+  margin-bottom: 9px;
+}
+
+.stat strong {
+  font-size: 23px;
+}
+
+#timer { color: var(--blue); }
+#timer.warning { color: var(--red); }
+
+.panel {
+  background: rgba(18, 22, 41, 0.96);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 23px;
+  margin-bottom: 18px;
+}
+
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.progress {
+  height: 7px;
+  background: #292b43;
+  border-radius: 20px;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+#progressBar {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--purple), var(--blue));
+  transition: width .25s;
+}
+
+.topic {
+  color: var(--purple);
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 1.1px;
+  text-transform: uppercase;
+}
+
+#question {
+  font-size: 21px;
+  line-height: 1.55;
+  margin: 14px 0 22px;
+}
+
+.options {
+  display: grid;
+  gap: 12px;
+}
+
+.option {
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+  width: 100%;
+  padding: 15px;
+  color: var(--text);
+  background: var(--panel2);
+  border: 1px solid #343750;
+  border-radius: 12px;
+  text-align: left;
+  font-size: 15px;
+  line-height: 1.5;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.option:hover {
+  border-color: var(--purple);
+  background: #27203f;
+}
+
+.option.selected {
+  border-color: var(--purple);
+  background: #302047;
+}
+
+.option:disabled {
+  cursor: default;
+  opacity: 1;
+}
+
+.letter {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid #514269;
+  border-radius: 8px;
+  font-weight: bold;
+  color: #d9b9ff;
+}
+
+.navigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 25px;
+}
+
+button.action {
+  padding: 12px 20px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  background: #211b35;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+button.action:hover:not(:disabled) {
+  border-color: var(--purple);
+}
+
+button.action:disabled {
+  opacity: .35;
+  cursor: not-allowed;
+}
+
+button.primary {
+  color: #130b20;
+  border: none;
+  background: linear-gradient(100deg, #c18aff, #83caff);
+}
+
+button.danger {
+  border-color: #7b3449;
+  background: #351a2a;
+}
+
+.question-map {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 17px;
+}
+
+.qdot {
+  width: 39px;
+  height: 39px;
+  background: #20243a;
+  color: var(--muted);
+  border: 1px solid #393d55;
+  border-radius: 9px;
+  cursor: pointer;
+}
+
+.qdot.current {
+  border: 2px solid var(--purple);
+  color: white;
+}
+
+.qdot.answered {
+  background: #34234a;
+  color: #e6c9ff;
+}
+
+.map-label {
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 22px;
+}
+
+.hidden { display: none !important; }
+
+#resultScreen { text-align: center; }
+
+.score-circle {
+  width: 150px;
+  height: 150px;
+  border: 6px solid var(--purple);
+  border-radius: 50%;
+  display: grid;
+  place-content: center;
+  margin: 25px auto;
+  background: #201832;
+}
+
+.score-circle strong { font-size: 35px; }
+.score-circle span { color: var(--muted); margin-top: 5px; }
+
+.result-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 25px 0;
+}
+
+.result-box {
+  padding: 17px 8px;
+  border-radius: 12px;
+  background: var(--panel2);
+}
+
+.result-box strong {
+  display: block;
+  font-size: 23px;
+  margin-bottom: 8px;
+}
+
+.result-box small { color: var(--muted); }
+
+#reviewList {
+  text-align: left;
+  margin-top: 28px;
+}
+
+.review-item {
+  border: 1px solid #37334e;
+  background: #171a2d;
+  padding: 17px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  line-height: 1.6;
+}
+
+.review-item p {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.correct-text { color: var(--green); }
+.wrong-text { color: var(--red); }
+
+footer {
+  text-align: center;
+  padding: 20px;
+  color: #777f9c;
+  font-size: 12px;
+}
+
+@media (max-width: 600px) {
+  .panel { padding: 16px; }
+  #question { font-size: 18px; }
+  .stat { padding: 12px 5px; }
+  .stat strong { font-size: 19px; }
+  .result-grid { gap: 6px; }
+  .option { padding: 12px; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="tag">ARTIFICIAL INTELLIGENCE • LEVEL UP</div>
+  <h1>Advanced <span>AI Quiz</span></h1>
+  <p>
+    Test your knowledge of Machine Learning, NLP, Robotics,
+    AI applications and emerging technologies.
+  </p>
+</header>
+
+<main class="container">
+
+  <section class="stats">
+    <div class="stat">
+      <small>TOTAL QUESTIONS</small>
+      <strong>20</strong>
+    </div>
+    <div class="stat">
+      <small>TIME REMAINING</small>
+      <strong id="timer">10:00</strong>
+    </div>
+    <div class="stat">
+      <small>ANSWERED</small>
+      <strong id="answeredCount">0 / 20</strong>
+    </div>
+  </section>
+
+  <section id="quizScreen">
+
+    <div class="panel">
+      <div class="progress-info">
+        <span id="questionCount">Question 1 of 20</span>
+        <span id="completion">0% completed</span>
+      </div>
+
+      <div class="progress">
+        <div id="progressBar"></div>
+      </div>
+
+      <div class="topic" id="topic"></div>
+      <h2 id="question"></h2>
+      <div class="options" id="options"></div>
+
+      <div class="navigation">
+        <button class="action" id="prevBtn" onclick="previousQuestion()">
+          ← Previous
+        </button>
+        <button class="action danger" onclick="confirmSubmit()">
+          Submit Quiz
+        </button>
+        <button class="action primary" id="nextBtn" onclick="nextQuestion()">
+          Next →
+        </button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <strong>Question Navigator</strong>
+      <p class="map-label">
+        Purple-filled numbers indicate answered questions.
+        Outlined numbers indicate the current question.
+      </p>
+      <div class="question-map" id="questionMap"></div>
+    </div>
+
+  </section>
+
+  <section id="resultScreen" class="panel hidden">
+    <div class="tag">QUIZ COMPLETED</div>
+    <h2 id="resultTitle">Your Results</h2>
+
+    <div class="score-circle">
+      <strong id="scorePercent">0%</strong>
+      <span id="scoreFraction">0 / 20</span>
+    </div>
+
+    <p id="resultMessage"></p>
+
+    <div class="result-grid">
+      <div class="result-box">
+        <strong class="correct-text" id="correctCount">0</strong>
+        <small>Correct</small>
+      </div>
+      <div class="result-box">
+        <strong class="wrong-text" id="wrongCount">0</strong>
+        <small>Incorrect</small>
+      </div>
+      <div class="result-box">
+        <strong id="unansweredCount">0</strong>
+        <small>Unanswered</small>
+      </div>
+    </div>
+
+    <button class="action primary" onclick="restartQuiz()">
+      Restart Quiz
+    </button>
+
+    <button class="action" onclick="downloadResults()">
+      Download Results
+    </button>
+
+    <div id="reviewList"></div>
+  </section>
+
+</main>
+
+<footer>
+  Advanced AI MCQ Challenge • 20 Questions • 10 Minutes
+</footer>
+
+<script>
+"use strict";
+
+// ========================================
+// QUESTION BANK: 20 ADVANCED AI QUESTIONS
+// ========================================
+
+const questions = [
+{
+  topic: "1. Introduction to AI",
+  q: "An AI system performs extremely well at diagnosing one specific disease but cannot perform unrelated intellectual tasks. Which classification best describes this system?",
+  options: [
+    "Artificial General Intelligence",
+    "Narrow Artificial Intelligence",
+    "Artificial Superintelligence",
+    "Human-level general reasoning"
+  ],
+  answer: 1,
+  explanation: "Narrow AI is designed for a specific task or limited domain. Strong performance on that task does not establish general intelligence."
+},
+{
+  topic: "1. Introduction to AI",
+  q: "Which statement best distinguishes artificial intelligence from conventional rule-based automation?",
+  options: [
+    "Every AI system must use a physical robot.",
+    "Conventional automation always learns from examples.",
+    "AI can use learned representations or reasoning to handle tasks that require intelligent behavior.",
+    "AI systems never use predefined rules."
+  ],
+  answer: 2,
+  explanation: "AI includes learning-based and reasoning-based approaches. It can generalize from data, although some AI systems also use predefined rules."
+},
+{
+  topic: "2. AI Around Us",
+  q: "A video platform recommends videos based on viewing history, clicks and similarities between users. Which technique is most directly associated with finding patterns in these preferences?",
+  options: [
+    "Collaborative filtering",
+    "Optical character recognition",
+    "Image segmentation",
+    "Packet switching"
+  ],
+  answer: 0,
+  explanation: "Collaborative filtering uses interactions or preference patterns across users or items to generate recommendations."
+},
+{
+  topic: "2. AI Around Us",
+  q: "A facial recognition system performs well in training but makes many errors on people photographed in unfamiliar lighting. Which issue is the most likely explanation?",
+  options: [
+    "Excessive network bandwidth",
+    "Perfect generalization",
+    "Guaranteed elimination of bias",
+    "Poor generalization caused by a mismatch between training and deployment data"
+  ],
+  answer: 3,
+  explanation: "A distribution shift occurs when deployment conditions differ from training conditions, potentially reducing model accuracy."
+},
+{
+  topic: "3. Machine Learning Basics",
+  q: "A dataset contains thousands of emails labelled 'spam' or 'not spam'. The model learns to predict the label of new emails. Which learning paradigm is being used?",
+  options: [
+    "Unsupervised learning",
+    "Supervised learning",
+    "Reinforcement learning",
+    "Evolutionary search without labels"
+  ],
+  answer: 1,
+  explanation: "Supervised learning uses labelled examples to learn a mapping from input features to known target outputs."
+},
+{
+  topic: "3. Machine Learning Basics",
+  q: "A model achieves 99% training accuracy but only 68% test accuracy on a representative test set. What is the strongest diagnosis?",
+  options: [
+    "The model is necessarily underfitting.",
+    "The model has proved that its predictions are unbiased.",
+    "The model likely overfits the training data.",
+    "The test set must contain only duplicate records."
+  ],
+  answer: 2,
+  explanation: "A substantial gap between training and test performance is a common sign of overfitting: the model fits training-specific patterns that do not generalize."
+},
+{
+  topic: "3. Machine Learning Basics",
+  q: "An engineer uses 80% of a dataset for training and 20% for testing, then repeatedly changes the model based on test accuracy. What is the main methodological problem?",
+  options: [
+    "The test set is becoming part of the model-selection process, so its evaluation is no longer an independent final estimate.",
+    "The model cannot be trained on 80% of any dataset.",
+    "Every model must use an equal training and testing split.",
+    "Test accuracy can only be measured for unsupervised learning."
+  ],
+  answer: 0,
+  explanation: "Repeatedly tuning against the test set leaks evaluation information into model selection. A separate validation set should guide tuning, while the test set is reserved for final evaluation."
+},
+{
+  topic: "3. Machine Learning Basics",
+  q: "A dataset contains no labels. The goal is to group customers according to similarities in purchasing behaviour. Which approach is most appropriate?",
+  options: [
+    "Linear regression using known targets",
+    "Supervised classification",
+    "Reward-based policy learning",
+    "Unsupervised clustering"
+  ],
+  answer: 3,
+  explanation: "Clustering is an unsupervised learning task that groups observations by similarity without requiring predefined class labels."
+},
+{
+  topic: "4. Robotics and AI",
+  q: "A warehouse robot detects an obstacle, calculates a safer path and changes its wheel speeds to follow that path. Which description best captures the relationship between AI and robotics here?",
+  options: [
+    "AI and robotics are identical disciplines.",
+    "AI supports perception and decision-making, while robotics integrates these capabilities with physical sensing and actuation.",
+    "Robotics is limited to software with no physical components.",
+    "AI can operate only when a robot is stationary."
+  ],
+  answer: 1,
+  explanation: "AI can provide perception, prediction and planning; robotics combines such capabilities with sensors, control systems and physical actuators."
+},
+{
+  topic: "4. Robotics and AI",
+  q: "An autonomous mobile robot repeatedly misses a narrow doorway because small errors in its estimated position accumulate. Which capability would most directly help it correct its position relative to the environment?",
+  options: [
+    "Increasing the brightness of its display",
+    "Using a larger text-generation model alone",
+    "Localization and feedback from environmental sensors",
+    "Removing all sensor measurements"
+  ],
+  answer: 2,
+  explanation: "Localization estimates the robot's position. Sensor feedback helps correct accumulated errors and supports reliable navigation."
+},
+{
+  topic: "5. Natural Language Processing",
+  q: "A speech recognition model converts spoken words into text, while another system translates that text into French. Which sequence correctly identifies the tasks?",
+  options: [
+    "Automatic speech recognition followed by machine translation",
+    "Machine translation followed by image segmentation",
+    "Text classification followed by speech synthesis",
+    "Object detection followed by clustering"
+  ],
+  answer: 0,
+  explanation: "Automatic speech recognition converts audio into text. Machine translation then converts text from one language into another."
+},
+{
+  topic: "5. Natural Language Processing",
+  q: "A language model produces a confident but fabricated scientific reference. What is the most appropriate interpretation?",
+  options: [
+    "The model has independently verified the reference.",
+    "Confidence guarantees factual accuracy.",
+    "The reference proves that the model is conscious.",
+    "The model may have generated a plausible-sounding answer without factual verification."
+  ],
+  answer: 3,
+  explanation: "This is a hallucination: generated content can sound credible without being supported by real evidence."
+},
+{
+  topic: "5. Natural Language Processing",
+  q: "Why can self-attention help a Transformer process a word whose meaning depends on another word far away in the same sequence?",
+  options: [
+    "It removes the need for all training data.",
+    "It allows token representations to incorporate information from other relevant tokens in the sequence.",
+    "It guarantees that every generated statement is true.",
+    "It converts all words into images before processing."
+  ],
+  answer: 1,
+  explanation: "Self-attention computes interactions between token representations, allowing information from distant contextual tokens to influence a token's representation."
+},
+{
+  topic: "6. AI Applications",
+  q: "A medical AI achieves excellent overall accuracy, but misses a high proportion of actual disease cases. Which metric is particularly important to examine?",
+  options: [
+    "Screen resolution",
+    "Model file size",
+    "Recall or sensitivity",
+    "Number of interface buttons"
+  ],
+  answer: 2,
+  explanation: "Recall (sensitivity) measures the proportion of actual positive cases correctly identified. Low recall can mean many disease cases are missed."
+},
+{
+  topic: "6. AI Applications",
+  q: "An agricultural AI predicts crop disease accurately on images from one region but performs poorly on another region with different crop varieties and lighting. What is the best next step?",
+  options: [
+    "Evaluate representative data from the new region and adapt or retrain the model where justified.",
+    "Assume the original accuracy applies everywhere.",
+    "Remove the validation process permanently.",
+    "Increase the number of decorative icons in the application."
+  ],
+  answer: 0,
+  explanation: "Differences in crops, environments and image conditions can create distribution shift. Representative evaluation and appropriate adaptation can improve reliability."
+},
+{
+  topic: "6. AI Applications",
+  q: "A bank uses historical loan data to predict defaults. If past lending decisions systematically disadvantaged a group, what is a major risk?",
+  options: [
+    "Historical data automatically eliminates discrimination.",
+    "A model trained on historical records cannot affect future decisions.",
+    "Predictive accuracy guarantees equal treatment.",
+    "The model may reproduce or amplify historical biases unless fairness and data quality are examined."
+  ],
+  answer: 3,
+  explanation: "Historical records can contain structural or measurement biases. Fairness evaluation, suitable data practices and human oversight are important."
+},
+{
+  topic: "7. Current AI Trends",
+  q: "A self-driving vehicle detects a pedestrian entering its path. Which design principle is most important for responding safely?",
+  options: [
+    "Prioritize passenger entertainment over road conditions.",
+    "Use reliable perception and risk-aware control that can take a safe action under uncertainty.",
+    "Continue at the same speed whenever a prediction is uncertain.",
+    "Rely entirely on a cloud connection for every emergency response."
+  ],
+  answer: 1,
+  explanation: "Autonomous driving requires perception, uncertainty-aware planning and safety-critical control. Immediate safety functions should not depend entirely on cloud connectivity."
+},
+{
+  topic: "7. Current AI Trends",
+  q: "A city deploys AI to optimize traffic signals. Which evaluation best determines whether the system is beneficial?",
+  options: [
+    "Count only the number of installed cameras.",
+    "Measure only how quickly the AI software starts.",
+    "Compare travel times, congestion, safety and performance across different traffic conditions against a suitable baseline.",
+    "Assume the most complex algorithm must perform best."
+  ],
+  answer: 2,
+  explanation: "Real-world performance should be evaluated against a baseline using meaningful outcomes, including traffic efficiency, safety and different operating conditions."
+},
+{
+  topic: "7. Current AI Trends",
+  q: "An AI research team wants to reduce the energy and memory costs of deploying a trained model on an edge device. Which approach can help, depending on the model and hardware?",
+  options: [
+    "Quantization, which represents weights or activations with lower-precision numbers",
+    "Duplicating every model parameter several times",
+    "Increasing the input resolution without evaluating its cost",
+    "Disabling all measurements of latency and memory"
+  ],
+  answer: 0,
+  explanation: "Quantization can reduce memory use and computational cost, and may improve inference speed on supported hardware, though accuracy should be evaluated."
+},
+{
+  topic: "7. Current AI Trends",
+  q: "A space exploration rover must operate during communication delays with Earth. Which architecture is most appropriate for time-critical navigation?",
+  options: [
+    "Wait for Earth to approve every wheel movement.",
+    "Use a language model as the only safety controller.",
+    "Disable obstacle sensors to reduce data volume.",
+    "Use onboard sensing, planning and safety controls, with ground operators handling suitable higher-level decisions."
+  ],
+  answer: 3,
+  explanation: "Communication delays make immediate ground control impractical for every action. Autonomous onboard capabilities allow the rover to respond locally to hazards."
+}
+];
+
+// ========================================
+// QUIZ STATE
+// ========================================
+
+let current = 0;
+let answers = Array(questions.length).fill(null);
+let timeLeft = 600;
+let timerInterval = null;
+let finished = false;
+let startedAt = null;
+let elapsedSeconds = 0;
+
+const $ = id => document.getElementById(id);
+
+function startTimer() {
+  startedAt = Date.now();
+  timerInterval = setInterval(() => {
+    if (finished) return;
+
+    const elapsed = Math.floor((Date.now() - startedAt) / 1000);
+    timeLeft = Math.max(0, 600 - elapsed);
+    elapsedSeconds = elapsed;
+    updateTimer();
+
+    if (timeLeft <= 0) {
+      submitQuiz(true);
+    }
+  }, 250);
+}
+
+function updateTimer() {
+  const mins = Math.floor(timeLeft / 60);
+  const secs = timeLeft % 60;
+  $("timer").textContent =
+    String(mins).padStart(2, "0") + ":" +
+    String(secs).padStart(2, "0");
+
+  $("timer").classList.toggle("warning", timeLeft <= 60);
+}
+
+function renderQuestion() {
+  const item = questions[current];
+
+  $("topic").textContent = item.topic;
+  $("question").textContent = item.q;
+  $("questionCount").textContent =
+    `Question ${current + 1} of ${questions.length}`;
+
+  const completed = answers.filter(a => a !== null).length;
+  $("answeredCount").textContent =
+    `${completed} / ${questions.length}`;
+
+  $("completion").textContent =
+    `${Math.round(completed / questions.length * 100)}% completed`;
+
+  $("progressBar").style.width =
+    `${completed / questions.length * 100}%`;
+
+  $("prevBtn").disabled = current === 0;
+  $("nextBtn").disabled = current === questions.length - 1;
+
+  $("options").innerHTML = "";
+
+  item.options.forEach((option, index) => {
+    const button = document.createElement("button");
+    button.className = "option";
+
+    if (answers[current] === index) {
+      button.classList.add("selected");
+    }
+
+    const letter = document.createElement("span");
+    letter.className = "letter";
+    letter.textContent = String.fromCharCode(65 + index);
+
+    const label = document.createElement("span");
+    label.textContent = option;
+
+    button.append(letter, label);
+    button.onclick = () => selectAnswer(index);
+
+    $("options").appendChild(button);
+  });
+
+  renderMap();
+}
+
+function selectAnswer(index) {
+  if (finished) return;
+  answers[current] = index;
+  renderQuestion();
+}
+
+function renderMap() {
+  $("questionMap").innerHTML = "";
+
+  questions.forEach((_, index) => {
+    const button = document.createElement("button");
+    button.className = "qdot";
+
+    if (answers[index] !== null) {
+      button.classList.add("answered");
+    }
+
+    if (index === current) {
+      button.classList.add("current");
+    }
+
+    button.textContent = index + 1;
+    button.title = `Go to question ${index + 1}`;
+    button.onclick = () => {
+      current = index;
+      renderQuestion();
+    };
+
+    $("questionMap").appendChild(button);
+  });
+}
+
+function previousQuestion() {
+  if (current > 0) {
+    current--;
+    renderQuestion();
+  }
+}
+
+function nextQuestion() {
+  if (current < questions.length - 1) {
+    current++;
+    renderQuestion();
+  }
+}
+
+function confirmSubmit() {
+  if (finished) return;
+
+  const unanswered = answers.filter(a => a === null).length;
+
+  const message = unanswered > 0
+    ? `You have ${unanswered} unanswered question(s). Submit anyway?`
+    : "Are you sure you want to submit your quiz?";
+
+  if (confirm(message)) {
+    submitQuiz(false);
+  }
+}
+
+// ========================================
+// SUBMIT AND SCORE
+// ========================================
+
+function submitQuiz(autoSubmitted = false) {
+  if (finished) return;
+
+  finished = true;
+
+  if (timerInterval !== null) {
+    clearInterval(timerInterval);
+  }
+
+  elapsedSeconds = Math.min(
+    600,
+    Math.floor((Date.now() - startedAt) / 1000)
+  );
+
+  const correct = questions.reduce((count, q, index) => {
+    return count + (answers[index] === q.answer ? 1 : 0);
+  }, 0);
+
+  const unanswered = answers.filter(a => a === null).length;
+  const wrong = questions.length - correct - unanswered;
+  const percent = Math.round(correct / questions.length * 100);
+
+  $("quizScreen").classList.add("hidden");
+  $("resultScreen").classList.remove("hidden");
+
+  $("scorePercent").textContent = percent + "%";
+  $("scoreFraction").textContent =
+    `${correct} / ${questions.length}`;
+
+  $("correctCount").textContent = correct;
+  $("wrongCount").textContent = wrong;
+  $("unansweredCount").textContent = unanswered;
+
+  $("resultTitle").textContent = autoSubmitted
+    ? "Time's Up!"
+    : "Quiz Submitted!";
+
+  if (percent >= 90) {
+    $("resultMessage").textContent =
+      "Outstanding performance. You demonstrated excellent understanding of advanced AI concepts.";
+  } else if (percent >= 75) {
+    $("resultMessage").textContent =
+      "Strong result. Review the missed questions to strengthen your understanding.";
+  } else if (percent >= 50) {
+    $("resultMessage").textContent =
+      "A reasonable foundation, but several concepts need more practice.";
+  } else {
+    $("resultMessage").textContent =
+      "Review the explanations below and attempt the challenge again.";
+  }
+
+  renderReview();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function renderReview() {
+  $("reviewList").innerHTML = "<h2>Answer Review</h2>";
+
+  questions.forEach((q, index) => {
+    const isCorrect = answers[index] === q.answer;
+
+    const article = document.createElement("article");
+    article.className = "review-item";
+
+    const heading = document.createElement("strong");
+    heading.textContent = `${index + 1}. ${q.q}`;
+
+    const status = document.createElement("p");
+    status.className = isCorrect ? "correct-text" : "wrong-text";
+
+    status.textContent = answers[index] === null
+      ? "Not answered"
+      : isCorrect ? "Correct" : "Incorrect";
+
+    const selected = document.createElement("p");
+    selected.textContent = "Your answer: " +
+      (answers[index] === null
+        ? "Not answered"
+        : q.options[answers[index]]);
+
+    const correctAnswer = document.createElement("p");
+    correctAnswer.className = "correct-text";
+    correctAnswer.textContent =
+      "Correct answer: " + q.options[q.answer];
+
+    const explanation = document.createElement("p");
+    explanation.textContent = "Explanation: " + q.explanation;
+
+    article.append(
+      heading,
+      status,
+      selected,
+      correctAnswer,
+      explanation
+    );
+
+    $("reviewList").appendChild(article);
+  });
+}
+
+// ========================================
+// DOWNLOAD RESULTS AS A TEXT FILE
+// ========================================
+
+function downloadResults() {
+  const correct = questions.reduce((count, q, index) => {
+    return count + (answers[index] === q.answer ? 1 : 0);
+  }, 0);
+
+  const lines = [
+    "ADVANCED AI MCQ QUIZ RESULTS",
+    "============================",
+    `Score: ${correct}/${questions.length}`,
+    `Percentage: ${Math.round(correct / questions.length * 100)}%`,
+    `Time used: ${Math.floor(elapsedSeconds / 60)}m ${elapsedSeconds % 60}s`,
+    ""
+  ];
+
+  questions.forEach((q, index) => {
+    lines.push(`${index + 1}. ${q.q}`);
+    lines.push(
+      "Your answer: " +
+      (answers[index] === null
+        ? "Not answered"
+        : q.options[answers[index]])
+    );
+    lines.push("Correct answer: " + q.options[q.answer]);
+    lines.push("Explanation: " + q.explanation);
+    lines.push("");
+  });
+
+  const blob = new Blob(
+    [lines.join("\n")],
+    { type: "text/plain;charset=utf-8" }
+  );
+
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+
+  link.href = url;
+  link.download = "AI_Quiz_Results.txt";
+  link.click();
+
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+function restartQuiz() {
+  if (!confirm("Restart the quiz and reset all answers?")) return;
+
+  current = 0;
+  answers = Array(questions.length).fill(null);
+  timeLeft = 600;
+  finished = false;
+  elapsedSeconds = 0;
+  startedAt = null;
+
+  $("resultScreen").classList.add("hidden");
+  $("quizScreen").classList.remove("hidden");
+
+  updateTimer();
+  renderQuestion();
+  startTimer();
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+// Start the quiz automatically when the page loads.
+updateTimer();
+renderQuestion();
+startTimer();
+</script>
+
+</body>
+</html>
